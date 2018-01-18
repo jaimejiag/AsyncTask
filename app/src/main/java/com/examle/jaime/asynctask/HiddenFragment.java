@@ -6,22 +6,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.util.Random;
 
 
 public class HiddenFragment extends Fragment {
-    private static final int MAX_LENGTH = 2000;
+    private static final int MAX_LENGTH = 1000;
+    public static final String TAG = "hiddenfragment";
 
-    private ProgressBar mProgressBar;
     private int[] mNumbers;
-    private ProgressBasTask mProgressBasTask;
+    private ProgressBarTask mProgressBarTask;
     private TaskCallbacks mCallback;
 
 
@@ -53,8 +47,8 @@ public class HiddenFragment extends Fragment {
         mNumbers = new int[MAX_LENGTH];
         generateNumbers();
 
-        mProgressBasTask = new ProgressBasTask();
-        mProgressBasTask.execute();
+        mProgressBarTask = new ProgressBarTask();
+        mProgressBarTask.execute();
     }
 
 
@@ -66,7 +60,18 @@ public class HiddenFragment extends Fragment {
     }
 
 
-    public class ProgressBasTask extends AsyncTask<Void, Integer, Void> {
+    public void cancelTask() {
+        if (mProgressBarTask != null)
+            mProgressBarTask.cancel(true);
+    }
+
+
+    public ProgressBarTask getProgressBarTask() {
+        return mProgressBarTask;
+    }
+
+
+    public class ProgressBarTask extends AsyncTask<Void, Integer, Void> {
 
 
         @Override
